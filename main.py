@@ -8,18 +8,18 @@ GRAVITY = 1
 JUMP_SPEED = -16
 
 LEVEL = [
-    "                    ",
-    "                    ",
-    "                    ",
-    "                    ",
-    "                    ",
-    "                    ",
-    "                    ",
-    "   ###       ###   #",
-    " P                 #",
-    "########   #########",
-    "########   #########",
-    "########   #########",
+    "                                                            ",
+    "                                                            ",
+    "                                                            ",
+    "                                                            ",
+    "                                                            ",
+    "                              ####                          ",
+    "                                                            ",
+    "            ###            ##                               ",
+    "  P                        ##                               ",
+    "######  ############  ############   #######################",
+    "######  ############  ############   #######################",
+    "######  ############  ############   #######################",
 ]
 
 
@@ -45,6 +45,7 @@ walls, start = load_level()
 player = pygame.Rect(start[0], start[1], 30, 40)
 y_speed = 0
 on_ground = False
+level_width = len(LEVEL[0]) * TILE
 running = True
 
 while running:
@@ -87,10 +88,13 @@ while running:
             y_speed = 0
 
     # 3. Draw
+    camera_x = player.centerx - WIDTH // 2
+    camera_x = max(0, min(camera_x, level_width - WIDTH))
+
     screen.fill((135, 206, 235))
     for wall in walls:
-        pygame.draw.rect(screen, (90, 160, 70), wall)
-    pygame.draw.rect(screen, (40, 70, 200), player)
+        pygame.draw.rect(screen, (90, 160, 70), wall.move(-camera_x, 0))
+    pygame.draw.rect(screen, (40, 70, 200), player.move(-camera_x, 0))
     pygame.display.flip()
     clock.tick(60)
 
