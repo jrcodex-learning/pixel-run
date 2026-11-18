@@ -2,23 +2,47 @@ import pygame
 
 WIDTH = 800
 HEIGHT = 480
+TILE = 40
 SPEED = 5
 GRAVITY = 1
 JUMP_SPEED = -16
+
+LEVEL = [
+    "                    ",
+    "                    ",
+    "                    ",
+    "                    ",
+    "                    ",
+    "                    ",
+    "                    ",
+    "   ###       ###   #",
+    " P                 #",
+    "########   #########",
+    "########   #########",
+    "########   #########",
+]
+
+
+def load_level():
+    walls = []
+    for row, line in enumerate(LEVEL):
+        for col, letter in enumerate(line):
+            x = col * TILE
+            y = row * TILE
+            if letter == "#":
+                walls.append(pygame.Rect(x, y, TILE, TILE))
+            elif letter == "P":
+                start = (x, y)
+    return walls, start
+
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pixel Run")
 clock = pygame.time.Clock()
 
-player = pygame.Rect(20, 320, 30, 40)
-walls = [
-    pygame.Rect(0, 360, 320, 120),
-    pygame.Rect(440, 360, 360, 120),
-    pygame.Rect(80, 260, 120, 40),
-    pygame.Rect(540, 240, 160, 40),
-    pygame.Rect(720, 280, 40, 80),
-]
+walls, start = load_level()
+player = pygame.Rect(start[0], start[1], 30, 40)
 y_speed = 0
 on_ground = False
 running = True
